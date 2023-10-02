@@ -25,7 +25,7 @@ public class Member {
     @Embedded
     private Address address;
 
-    @JsonIgnore
+    @JsonIgnore //JsonIgnore : 엔티티에서 사용 최악. 화면에 종속적
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
