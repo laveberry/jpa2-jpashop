@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,10 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+//    @NotEmpty //@Valid 체크
     private String name;
+    // 엔티티 그대로 파라미터로 사용시 이렇게 이름이 바뀌면 장애남.
+//    private String username;
 
     @Embedded
     private Address address;
