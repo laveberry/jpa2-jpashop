@@ -59,7 +59,7 @@ public class Order {
     }
 
     //==생성 메서드==//
-    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) { //... : 지속생성 가능
         Order order = new Order();
         order.setMember(member);
         order.setDelivery(delivery);

@@ -24,7 +24,7 @@ public class InitDb {
 
     private final InitService initService;
 
-    @PostConstruct
+    @PostConstruct // 스프링 다 올라오고나면 스프링빈 호출
     public void init() {
         initService.dbInit1();
         initService.dbInit2();
