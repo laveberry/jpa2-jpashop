@@ -2,6 +2,7 @@ package jpabook.jpashop.repository;
 
 import jpabook.jpashop.domain.Order;
 
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -97,6 +98,7 @@ public class OrderRepository {
     }
 
     // join fetch
+    // 레포지토리에서 엔티티 조회정도는 해도됨
     public List<Order> findAllWithMemberDelivery() {
         return em.createQuery(
                 "select o from Order o" +
@@ -104,5 +106,18 @@ public class OrderRepository {
                         " join fetch o.delivery d", Order.class
         ).getResultList();
     }
+
+    //JPA에서 DTO 바로 조회
+    public List<OrderSimpleQueryDto> findOrderDtos() {
+        //엔티티 o는 식별자로 넘어가서 바로넘기기 안됨 -> 파라미터 다 입력
+        //DTO로 조회 -> 데이터 변경 불가
+        return em.createQuery(
+                "select new jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto(o.id, m.name, o.orderDate, o.status, d.address)" +
+                        " from Order  o" +
+                        " join o.member m" +
+                        " join o.delivery d", OrderSimpleQueryDto.class
+        ).getResultList();
+    }
+
 }
 

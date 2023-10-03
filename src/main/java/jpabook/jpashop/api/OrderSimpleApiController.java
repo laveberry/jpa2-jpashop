@@ -5,6 +5,8 @@ import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 public class OrderSimpleApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     // Order - Member 무한루프
     @GetMapping("/api/v1/simple-orders")
@@ -57,6 +60,22 @@ public class OrderSimpleApiController {
                 .map(SimpleOrderDto::new)
                 .collect(Collectors.toList());
     }
+
+    /*
+    API스펙에 맞춘 DTO 조회 -> 데이터 변경 불가
+    컨트롤러 레포지토리 의존, 필요한 부분만 select. 성능우세하나 재사용성 낮음
+    -> 쿼리용 레포지토지 생성
+     */
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> ordersV4() {
+        // 레포지토리는 가급적 순수한 엔티티 조회
+//        return orderRepository.findOrderDtos();
+
+        // 화면에 맞춘 쿼리용 레포지토리 생성하여 분리
+        return orderSimpleQueryRepository.findOrderDtos();
+    }
+
+
     @Data
     static class SimpleOrderDto {
         Long orderId;
