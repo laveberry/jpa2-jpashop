@@ -119,5 +119,18 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    // 일대다 패치조인 -> 페이징 불가!!
+    // 일대다의 : 컬렉션 페치조인은 한번만 사용해야함
+    public List<Order> findAllWithItem() {
+        // distinct : 중복제거, jpa에서 자체적으로 아이디 같으면 한번 더 걸러줌
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.orderItems oi" +
+                        " join fetch oi.item", Order.class)
+                .setFirstResult(1)
+                .setMaxResults(100)
+                .getResultList();
+    }
 }
 
