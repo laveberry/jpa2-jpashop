@@ -31,6 +31,7 @@ public class Order {
     private Member member;
 
 //    @JsonIgnore
+    @BatchSize(size = 1000) //컬렉션일 경우 디테일한 설정
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 

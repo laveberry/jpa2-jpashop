@@ -132,5 +132,22 @@ public class OrderRepository {
                 .setMaxResults(100)
                 .getResultList();
     }
+
+    /**
+     * xxToOne : 모두 패치조인
+     * 컬렉션 : 지연로딩 조회
+     * 일대다 분리 - 페이징 가능, 쿼리호출수 1+N -> 1+1로 최적화
+     * 지연로딩 최적화를 위해 hibernate.default_batch_fetch_size @BatchSize 적용
+     */
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
 }
 
